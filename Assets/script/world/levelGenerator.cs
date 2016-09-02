@@ -70,12 +70,10 @@ public class levelGenerator : MonoBehaviour {
         GameObject currpiece;
         if(!beginHasPassed||forceEmpty)
         {
-            Debug.Log("spawning begin");
              currpiece = GameObject.Instantiate(emptyPiece);
         }
         else
         {
-            Debug.Log("spawning regular");
             currpiece = getPiece();
         }
         Vector3 e = currpiece.transform.position;
