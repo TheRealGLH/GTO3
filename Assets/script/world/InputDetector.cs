@@ -84,11 +84,11 @@ public class InputDetector : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if(Input.GetKey(KeyCode.A))
+        if(Input.GetKeyDown(KeyCode.A))
         {
             player.MoveLeft();
         }
-        else if(Input.GetKey(KeyCode.D))
+        else if(Input.GetKeyDown(KeyCode.D))
         {
             player.MoveRight();
         }
