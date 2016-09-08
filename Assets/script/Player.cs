@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
     
     public GameObject World;
     public float pointAccuracy;
+    public float fieldOfView;
     private levelGenerator world;
     
     private CharacterController characterController;
@@ -21,6 +22,14 @@ public class Player : MonoBehaviour {
     public GameObject MPoint;
     public GameObject RPoint;
     private GameObject currPoint;
+    private bool hasJumped = false;
+    private bool canJump = true;
+    private bool isAirborne;
+    public float VVelocity;
+    public float VTerminalVelocity;
+    public float JumpSpeed;
+    private float VSpeed;
+
 
     void Start()
     {
@@ -32,10 +41,53 @@ public class Player : MonoBehaviour {
     
     void FixedUpdate()
     {
-        Speed = new Vector3(xspeed,yspeed,MoveSpeed);
+        Speed = new Vector3(0,VSpeed,MoveSpeed);
         characterController.SimpleMove(Speed);
-        if (!MathStuff.IsBetween<float>(transform.position.x, currPoint.transform.position.x - pointAccuracy, currPoint.transform.position.x + pointAccuracy)) this.transform.position = Vector3.MoveTowards(transform.position, currPoint.transform.position, xspeed);
+        if (!MathStuff.IsBetween<float>(transform.position.x, currPoint.transform.position.x - pointAccuracy, currPoint.transform.position.x + pointAccuracy)) 
+            this.transform.position = Vector3.MoveTowards(transform.position, currPoint.transform.position, xspeed);
         else canMove = true;
+        float dist;
+        GameObject p = world.GetLatestPiece();
+        if(p!= null)
+        {
+            dist = p.transform.position.z - transform.position.z;
+            print(dist);
+            if (dist < fieldOfView)
+            {
+               world.NextPiece();
+            }
+        }
+
+
+        //if(isAirborne)
+        //{
+        //    canJump = false;
+        //    if(VSpeed<=VTerminalVelocity)
+        //    {
+        //        VSpeed = VTerminalVelocity;
+        //    }
+        //    else
+        //    {
+        //        VSpeed =- VTerminalVelocity;
+        //    }
+        //}
+        //else
+        //{
+        //    if (!hasJumped)
+        //    {
+        //        VSpeed = 0;
+        //        canJump = true;
+        //    }
+        //}
+        //if (hasJumped && canJump)
+        //{
+        //    print("jomp");
+        //    VSpeed += JumpSpeed;
+        //    canJump = false;
+        //}
+
+        //isAirborne = !characterController.isGrounded;
+
     }
 
 
@@ -74,24 +126,25 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collider)
     {
-        if (collision.transform.tag == "killCollider") Die();
+        if (collider.gameObject.tag == "killCollider") Die();
 
-        if(collision.transform.tag == "Pickup")
+        if (collider.gameObject.tag == "Pickup")
         {
-            GameObject.Destroy(collision.gameObject);
+            GameObject.Destroy(collider.gameObject);
             print("REWORK PICKUP CODE, YOU DUNCE!");
         }
 
     }
     public void Jump()
     {
-
+        if(canJump)  hasJumped = true;
     }
 
     public void Die()
     {
+        print("ded");
         GameManager.Instance.ShowEndGameScreen();
     }
 }

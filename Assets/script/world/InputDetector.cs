@@ -92,5 +92,9 @@ public class InputDetector : MonoBehaviour {
         {
             player.MoveRight();
         }
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            player.Jump();
+        }
     }
 }

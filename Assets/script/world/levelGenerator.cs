@@ -23,23 +23,24 @@ public class levelGenerator : MonoBehaviour {
     public float nextSpawn;
     private float SpawnTimer;
     private bool isPaused;
+    private GameObject latestPiece;
 
 
 
     void FixedUpdate()
     {
-        if (!isPaused)
-        {
-            if (SpawnTimer >= nextSpawn)
-            {
-                NextPiece();
-                SpawnTimer = 0;
-            }
-            else
-            {
-                SpawnTimer += Time.deltaTime;
-            }
-        }
+        //if (!isPaused)
+        //{
+        //    if (SpawnTimer >= nextSpawn)
+        //    {
+        //        NextPiece();
+        //        SpawnTimer = 0;
+        //    }
+        //    else
+        //    {
+        //        SpawnTimer += Time.deltaTime;
+        //    }
+        //}
     }
 
     void Start()
@@ -86,6 +87,7 @@ public class levelGenerator : MonoBehaviour {
             levelPieces.Remove(piece);
             GameObject.Destroy(piece);
         }
+        latestPiece = currpiece;
         piecesCounter++;
     }
 
@@ -101,6 +103,11 @@ public class levelGenerator : MonoBehaviour {
             breathingRoomCounter++;
             return GameObject.Instantiate(emptyPiece);
         }
+    }
+
+    public GameObject GetLatestPiece()
+    {
+        return latestPiece;
     }
 
 
