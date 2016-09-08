@@ -41,52 +41,54 @@ public class Player : MonoBehaviour {
     
     void FixedUpdate()
     {
-        Speed = new Vector3(0,VSpeed,MoveSpeed);
-        characterController.SimpleMove(Speed);
-        if (!MathStuff.IsBetween<float>(transform.position.x, currPoint.transform.position.x - pointAccuracy, currPoint.transform.position.x + pointAccuracy)) 
-            this.transform.position = Vector3.MoveTowards(transform.position, currPoint.transform.position, xspeed);
-        else canMove = true;
-        float dist;
-        GameObject p = world.GetLatestPiece();
-        if(p!= null)
+        if (!GameManager.Instance.IsGamePaused())
         {
-            dist = p.transform.position.z - transform.position.z;
-            print(dist);
-            if (dist < fieldOfView)
+            Speed = new Vector3(0, VSpeed, MoveSpeed);
+            characterController.SimpleMove(Speed);
+            if (!MathStuff.IsBetween<float>(transform.position.x, currPoint.transform.position.x - pointAccuracy, currPoint.transform.position.x + pointAccuracy))
+                this.transform.position = Vector3.MoveTowards(transform.position, currPoint.transform.position, xspeed);
+            else canMove = true;
+            float dist;
+            GameObject p = world.GetLatestPiece();
+            if (p != null)
             {
-               world.NextPiece();
+                dist = p.transform.position.z - transform.position.z;
+                if (dist < fieldOfView)
+                {
+                    world.NextPiece();
+                }
             }
+
+
+            //if(isAirborne)
+            //{
+            //    canJump = false;
+            //    if(VSpeed<=VTerminalVelocity)
+            //    {
+            //        VSpeed = VTerminalVelocity;
+            //    }
+            //    else
+            //    {
+            //        VSpeed =- VTerminalVelocity;
+            //    }
+            //}
+            //else
+            //{
+            //    if (!hasJumped)
+            //    {
+            //        VSpeed = 0;
+            //        canJump = true;
+            //    }
+            //}
+            //if (hasJumped && canJump)
+            //{
+            //    print("jomp");
+            //    VSpeed += JumpSpeed;
+            //    canJump = false;
+            //}
+
+            //isAirborne = !characterController.isGrounded;
         }
-
-
-        //if(isAirborne)
-        //{
-        //    canJump = false;
-        //    if(VSpeed<=VTerminalVelocity)
-        //    {
-        //        VSpeed = VTerminalVelocity;
-        //    }
-        //    else
-        //    {
-        //        VSpeed =- VTerminalVelocity;
-        //    }
-        //}
-        //else
-        //{
-        //    if (!hasJumped)
-        //    {
-        //        VSpeed = 0;
-        //        canJump = true;
-        //    }
-        //}
-        //if (hasJumped && canJump)
-        //{
-        //    print("jomp");
-        //    VSpeed += JumpSpeed;
-        //    canJump = false;
-        //}
-
-        //isAirborne = !characterController.isGrounded;
 
     }
 

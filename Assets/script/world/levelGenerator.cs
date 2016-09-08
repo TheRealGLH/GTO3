@@ -29,18 +29,7 @@ public class levelGenerator : MonoBehaviour {
 
     void FixedUpdate()
     {
-        //if (!isPaused)
-        //{
-        //    if (SpawnTimer >= nextSpawn)
-        //    {
-        //        NextPiece();
-        //        SpawnTimer = 0;
-        //    }
-        //    else
-        //    {
-        //        SpawnTimer += Time.deltaTime;
-        //    }
-        //}
+
     }
 
     void Start()
