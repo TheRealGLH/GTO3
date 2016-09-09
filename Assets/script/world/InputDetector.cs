@@ -69,10 +69,35 @@ public class InputDetector : MonoBehaviour {
                                   player.MoveRight();
                               }
                           }
+
+                          if (swipeType.y != 0.0f)
+                          {
+                              if (swipeType.y > 0.0f)
+                              {
+                                  player.Jump();
+                              }
+                              else
+                              {
+                                  // MOVE DOWN
+                              }
+                          }
                       }
                       break;
               }
           }
+      }
+
+      if (Input.GetKeyDown(KeyCode.A))
+      {
+          player.MoveLeft();
+      }
+      else if (Input.GetKeyDown(KeyCode.D))
+      {
+          player.MoveRight();
+      }
+      if (Input.GetKeyDown(KeyCode.Space))
+      {
+          player.Jump();
       }
   }
     
@@ -84,17 +109,6 @@ public class InputDetector : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            player.MoveLeft();
-        }
-        else if(Input.GetKeyDown(KeyCode.D))
-        {
-            player.MoveRight();
-        }
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            player.Jump();
-        }
+        
     }
 }
