@@ -61,6 +61,17 @@ public class GameManager : Singleton<GameManager>
         return score;
     }
 
+    public void PickupCoin()
+    {
+        print("kaching");
+        coinsCollected++;
+    }
+
+    public void RaiseScore(int amount)
+    {
+        score += amount;
+    }
+
 
 
 }
