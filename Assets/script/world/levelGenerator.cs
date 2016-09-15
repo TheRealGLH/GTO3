@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+public enum GameDifficulty
+{
+    easy,
+    medium,
+    hard,
+    EuropeanExtreme
+}
+
 public class levelGenerator : MonoBehaviour {
 
 
@@ -8,12 +16,18 @@ public class levelGenerator : MonoBehaviour {
     public GameObject levelHolder;
     public GameObject emptyPiece;
     public List<GameObject> easyPieces;
+    public List<GameObject> mediumPieces;
+    public List<GameObject> hardPieces;
+    public List<GameObject> EuropeanEXTREMEPieces;
+    public List<GameObject> emptyLanePieces;
     [Header("Other Objects")]
     [Header("Settings")]
     public int piecesBehindStart;
     public int timeUntilMedium;
     public int timeUntilHard;
     public int beginBreathingRoom;
+    private int currBreathingRoom;
+    public int PiecesUntilBeginToHard;
     private bool beginHasPassed = false;
     public int breathingRoom;
     private int breathingRoomCounter = 0;
@@ -24,6 +38,8 @@ public class levelGenerator : MonoBehaviour {
     private float SpawnTimer;
     private bool isPaused;
     private GameObject latestPiece;
+    private List<GameObject> piecesSet;
+    private GameDifficulty currentDifficulty = GameDifficulty.easy;
 
 
 
@@ -34,6 +50,7 @@ public class levelGenerator : MonoBehaviour {
 
     void Start()
     {
+        piecesSet = easyPieces;
         piecesCounter = -piecesBehindStart;
         //the level you will see behind you
         for (int i = 0; i < piecesBehindStart; i++)
@@ -46,6 +63,7 @@ public class levelGenerator : MonoBehaviour {
         {
             SpawnPiece();
         }
+        
     }
 
     public void NextPiece()
@@ -56,6 +74,7 @@ public class levelGenerator : MonoBehaviour {
 
     void SpawnPiece(bool forceEmpty = false)
     {
+        if (piecesCounter > timeUntilMedium&&currentDifficulty==GameDifficulty.easy) UpDifficulty(GameDifficulty.medium);
         if (piecesCounter > beginBreathingRoom) beginHasPassed = true;
         GameObject currpiece;
         if(!beginHasPassed||forceEmpty)
@@ -76,6 +95,7 @@ public class levelGenerator : MonoBehaviour {
             levelPieces.Remove(piece);
             GameObject.Destroy(piece);
         }
+        if (beginHasPassed) GameManager.Instance.RaiseScore(GameManager.Instance.scoreRaiseAmount);
         latestPiece = currpiece;
         piecesCounter++;
     }
@@ -85,7 +105,7 @@ public class levelGenerator : MonoBehaviour {
         if(breathingRoomCounter == breathingRoom)
         {
             breathingRoomCounter = 0;
-            return GameObject.Instantiate(easyPieces[Random.Range(0, easyPieces.Count)]);           
+            return GameObject.Instantiate(piecesSet[Random.Range(0, piecesSet.Count)]);           
         }
         else
         {
@@ -98,6 +118,35 @@ public class levelGenerator : MonoBehaviour {
     {
         return latestPiece;
     }
+
+
+    void UpDifficulty(GameDifficulty diff)
+    {
+        switch (diff)
+        {
+            case GameDifficulty.easy:
+                Debug.LogError("INVALID DIFFICULTY!!");
+                //This is never supposed to happen, is it?
+                break;
+            case GameDifficulty.medium:
+                breathingRoom -= 3;
+                piecesSet = mediumPieces;
+                break;
+            case GameDifficulty.hard:
+                Debug.LogError("INVALID DIFFICULTY!!");
+                break;
+            case GameDifficulty.EuropeanExtreme:
+                Debug.LogError("INVALID DIFFICULTY!!");
+
+                break;
+            default:
+                Debug.LogError("INVALID DIFFICULTY!!");
+                break;
+        }
+        GameManager.Instance.RaiseDifficulty(diff);
+        currentDifficulty = diff;
+    }
+
 
 
 }
