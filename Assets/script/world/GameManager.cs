@@ -6,10 +6,18 @@ using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager>
 {
 
+    public int ScoreRaiseAmountEasy;
+    public int ScoreRaiseAmountMedium;
+    public int ScoreRaiseAmountHard;
+    public int ScoreRaiseAmountExtreme;
     private bool isPaused = false;
     private bool isForcePaused = false;
     private int score;
     private int coinsCollected;
+    private Player player;
+    private int currentSceneIndex;
+
+    public int scoreRaiseAmount { get; private set; }
 
     public override void Awake()
     {
@@ -18,7 +26,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-
+        currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        scoreRaiseAmount = ScoreRaiseAmountEasy;
     }
 
     public void ShowEndGameScreen()
@@ -71,6 +80,39 @@ public class GameManager : Singleton<GameManager>
     {
         score += amount;
     }
+
+    public void SetPlayer(Player player)
+    {
+        this.player = player;
+    }
+
+    public void RaiseDifficulty(GameDifficulty diff)
+    {
+        player.MoveSpeed += 3;
+        switch (diff)
+        {
+            case GameDifficulty.easy:
+                scoreRaiseAmount = ScoreRaiseAmountEasy;//this isn't supposed to happen;
+                break;
+            case GameDifficulty.medium:
+                scoreRaiseAmount = ScoreRaiseAmountMedium;
+                break;
+            case GameDifficulty.hard:
+                scoreRaiseAmount = ScoreRaiseAmountHard;
+                break;
+            case GameDifficulty.EuropeanExtreme:
+                scoreRaiseAmount = ScoreRaiseAmountExtreme;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void ResetScene()
+    {
+        SceneManager.LoadScene(currentSceneIndex);
+    }
+    
 
 
 

@@ -37,6 +37,7 @@ public class Player : MonoBehaviour {
         characterController = gameObject.GetComponent<CharacterController>();
         moveDirection = new Vector3(0, 0, MoveSpeed);
         currPoint = MPoint;
+        GameManager.Instance.SetPlayer(this);
     }
     
     void FixedUpdate()
